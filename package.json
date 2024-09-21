@@ -1,0 +1,14 @@
+{
+  "name": "madacbot",
+  "version": "1.0.0",
+  "description": "discord.js로 게임봇 만들기",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.16.2"
+  }
+}
