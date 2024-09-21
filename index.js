@@ -1,18 +1,34 @@
-const Discord = require('discord.js');
+const { Client, GatewayIntentBits, Events } = require('discord.js');
 const config = require('./config.json');
-const { Client, GatewayIntentBits } = require('discord.js');
+const { createGameEmbed } = require('./modules/game/createGameEmbed');
 
 const client = new Client({
     intents: [
-        GatewayIntentBits.Guilds, // 서버 관련 이벤트
-        GatewayIntentBits.GuildMessages, // 메시지 이벤트
-        GatewayIntentBits.MessageContent // 메시지 내용 이벤트 (필요한 경우)
+        GatewayIntentBits.Guilds,
     ]
 });
-const token = config.token
 
-client.once('ready', () => {
-	console.log('Ready!');
+client.once(Events.ClientReady, () => {
+    console.log('Ready!');
 });
 
-client.login(token);
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isCommand()) return;
+
+    const { commandName } = interaction;
+
+    if (commandName === 'ping') {
+        await interaction.reply('Pong!');
+    }
+
+    if (commandName === 'game') {
+        const gameType = interaction.options.getString('type'); 
+        const people = interaction.options.getInteger('people') || 4; 
+
+        const embed = createGameEmbed(gameType, people);
+
+        await interaction.reply({ embeds: [embed] });
+    }
+});
+
+client.login(config.token);
