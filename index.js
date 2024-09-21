@@ -1,10 +1,18 @@
-const Discord = require('discord.js');	// discord.js 라이브러리 호출
-const client = new Discord.Client();	// Client 객체 생성
+const Discord = require('discord.js');
+const config = require('./config.json');
+const { Client, GatewayIntentBits } = require('discord.js');
 
-// discord 봇이 실행될 때 딱 한 번 실행할 코드를 적는 부분
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds, // 서버 관련 이벤트
+        GatewayIntentBits.GuildMessages, // 메시지 이벤트
+        GatewayIntentBits.MessageContent // 메시지 내용 이벤트 (필요한 경우)
+    ]
+});
+const token = config.token
+
 client.once('ready', () => {
 	console.log('Ready!');
 });
 
-// 봇과 서버를 연결해주는 부분
-client.login('your-token-goes-here');
+client.login(token);
